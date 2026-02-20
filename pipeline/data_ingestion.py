@@ -17,21 +17,26 @@ import os
 
 
 @click.command()
+@click.option('--pg-user', default='root', help='PostgreSQL username')
+@click.option('--pg-pass', default='root', help='PostgreSQL password')
+@click.option('--pg-host', default='localhost', help='PostgreSQL host')
+@click.option('--pg-port', default='5432', help='PostgreSQL port')
+@click.option('--pg-db', default='ny_taxi', help='PostgreSQL database name')
 @click.option("--year", default=2021, type=int, help="Year of the taxi data (used to build URL)")
 @click.option("--month", default=1, type=int, help="Month of the taxi data (1-12)")
 @click.option("--chunksize", default=100000, type=int, help="Number of rows to process per chunk")
 @click.option("--target-table", default="yellow_taxi_data", help="Name of the Postgres table to write to")
 @click.option("--url", default=None, help="URL of the CSV file (overrides year/month computation)")
-def run(year, month, chunksize, target_table, url):
+def run(pg_user, pg_pass,pg_host, pg_port, pg_db ,year, month, chunksize, target_table, url):
 
     ########################
     # globals from environment
     #######################
-    PG_PASSWORD = os.getenv("PG_passwd", 'root')
-    PG_USERNAME = os.getenv("PG_user","root")
-    HOSTNAME = os.getenv("HOSTNAME", "localhost")
-    PG_PORT = os.getenv("PG_PORT","5432")
-    PG_DB = os.getenv("PGDB","ny_taxi")
+    PG_PASSWORD = pg_pass
+    PG_USERNAME = pg_user
+    HOSTNAME = pg_host
+    PG_PORT = pg_port
+    PG_DB = pg_db
 
     # if the URL wasn't supplied, build it using the year/month
     if url is None:
