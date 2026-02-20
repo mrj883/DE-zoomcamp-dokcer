@@ -5,5 +5,6 @@ ENV PATH="/app/.venv/bin:$PATH"
 #important for syncing dependancies
 COPY "pyproject.toml" "uv.lock" ".python-version" ./
 RUN uv sync --locked
-COPY pipeline.py pipeline.py
-ENTRYPOINT ['python', 'pipeline.py']
+COPY data_ingestion.py data_ingestion.py
+COPY utils utils
+ENTRYPOINT ["python", "data_ingestion.py"]
